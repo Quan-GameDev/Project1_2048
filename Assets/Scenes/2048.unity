@@ -2106,7 +2106,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 1922771745369040984, guid: 848b5e2070249be4b91010e77e2d7bec, type: 3}
   tileStates:
   - {fileID: 11400000, guid: e5b365147f709ce48874d5f5492df2b1, type: 2}
-  - {fileID: 11400000, guid: 4b9201dfdfa01bb439ee31636f90aa50, type: 2}
+  - {fileID: 11400000, guid: 37c64a0cfdd1ba74fb03b0e29e80d1aa, type: 2}
   - {fileID: 11400000, guid: f7689a7b79a018c41bbb073ae0a57889, type: 2}
   - {fileID: 11400000, guid: 92006c95e167c5c4f9f6db862fbb504b, type: 2}
   - {fileID: 11400000, guid: af1f47c7cefeab44cb754baf47d9bbbe, type: 2}
