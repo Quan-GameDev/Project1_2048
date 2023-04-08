@@ -70,9 +70,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.9
+    - _ScaleRatioB: 0.73125
+    - _ScaleRatioC: 0.73125
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -117,9 +117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: ClearSans-Italic SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 1591988464
   material: {fileID: -7745327801825611145}
-  materialHashCode: 0
+  materialHashCode: 543191376
   m_Version: 1.1.0
   m_SourceFontFileGUID: 700eb85e61e378143ac3648397982271
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 700eb85e61e378143ac3648397982271, type: 3}
@@ -131,6 +131,7 @@ MonoBehaviour:
     m_StyleName: Italic
     m_PointSize: 90
     m_Scale: 1
+    m_UnitsPerEM: 0
     m_LineHeight: 121.68457
     m_AscentLine: 96.94336
     m_CapLine: 61
