@@ -121,6 +121,7 @@ public class TileBoard : MonoBehaviour
         b.SetState(tileStates[index], number);
 
         gameManager.IncreaseScore(number);
+        
     }
 
     private int IndexOf(TileState state)
@@ -154,6 +155,14 @@ public class TileBoard : MonoBehaviour
         if (CheckForGameOver()) {
             gameManager.GameOver();
         }
+
+        if(CheckForContinue()){
+            gameManager.Continue();
+        }
+
+        if(CheckForWin()){
+            gameManager.Win();
+        }
     }
 
     public bool CheckForGameOver()
@@ -186,6 +195,20 @@ public class TileBoard : MonoBehaviour
             }
         }
 
+        return true;
+    }
+
+    public bool CheckForContinue(){
+        if(tiles.Count == 2048){
+            return false;
+        }
+        return true;
+    }
+    
+    public bool CheckForWin(){
+        if(tiles.Count == 4096){
+            return false;
+        }
         return true;
     }
 }

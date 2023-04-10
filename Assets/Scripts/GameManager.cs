@@ -1,11 +1,14 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public TileBoard board;
     public CanvasGroup gameOver;
+    public CanvasGroup continue2048;
+    public CanvasGroup win4096;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI hiscoreText;
 
@@ -36,6 +39,30 @@ public class GameManager : MonoBehaviour
         gameOver.interactable = true;
 
         StartCoroutine(Fade(gameOver, 1f, 1f));
+    }
+
+    public void Continue()
+    {
+        board.enabled = false;
+        continue2048.interactable = true;
+
+        StartCoroutine(Fade(continue2048, 1f, 1f));
+    }
+
+    public void Win()
+    {
+        board.enabled = false;
+        win4096.interactable = true;
+
+        StartCoroutine(Fade(win4096, 1f, 1f));
+    }
+
+    public void exitGame(){
+        Application.Quit();
+    }
+
+    public void continueGame(){
+        SceneManager.LoadScene("2048");
     }
 
     private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay = 0f)
