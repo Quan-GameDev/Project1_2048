@@ -22,10 +22,17 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         SetScore(0);
+        IncreaseScore(0);
         hiscoreText.text = LoadHiscore().ToString();
  
         gameOver.alpha = 0f;
         gameOver.interactable = false;
+
+        continue2048.alpha = 0f;
+        continue2048.interactable = false;
+
+        win4096.alpha = 0f;
+        win4096.interactable = false;
 
         board.ClearBoard();
         board.CreateTile();
@@ -62,7 +69,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void continueGame(){
-        SceneManager.LoadScene("2048");
+        
     }
 
     private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay = 0f)

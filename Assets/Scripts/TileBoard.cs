@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles;
 
     private bool waiting;
+
+    public int x;
+    public int y;
 
     private void Awake()
     {
@@ -33,9 +37,11 @@ public class TileBoard : MonoBehaviour
 
     public void CreateTile(){
         Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[0], 2);
+        tile.SetState(tileStates[0], 512);
         tile.Spawn(grid.GetRandomEmptyCell()); 
         tiles.Add(tile);
+
+        
     }
 
     private void Update()
@@ -121,7 +127,8 @@ public class TileBoard : MonoBehaviour
         b.SetState(tileStates[index], number);
 
         gameManager.IncreaseScore(number);
-        
+        CheckForContinue(number);
+        CheckForWin(number);
     }
 
     private int IndexOf(TileState state)
@@ -156,14 +163,16 @@ public class TileBoard : MonoBehaviour
             gameManager.GameOver();
         }
 
-        if(CheckForContinue()){
+        if(CheckForContinue(x)){
             gameManager.Continue();
         }
 
-        if(CheckForWin()){
+        if(CheckForWin(y)){
             gameManager.Win();
         }
     }
+
+    
 
     public bool CheckForGameOver()
     {
@@ -198,15 +207,17 @@ public class TileBoard : MonoBehaviour
         return true;
     }
 
-    public bool CheckForContinue(){
-        if(tiles.Count == 2048){
+    public bool CheckForContinue(int x){
+        this.x = x;
+        if(x != 2048){
             return false;
         }
         return true;
     }
     
-    public bool CheckForWin(){
-        if(tiles.Count == 4096){
+    public bool CheckForWin(int y){
+        this.y = y;
+        if(y != 4096){
             return false;
         }
         return true;
