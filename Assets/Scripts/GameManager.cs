@@ -7,20 +7,26 @@ public class GameManager : MonoBehaviour
 {
     public TileBoard board;
     public CanvasGroup gameOver;
-    public CanvasGroup continue2048;
     public CanvasGroup win4096;
+    public CanvasGroup continue2048;    
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI hiscoreText;
 
-    private int score;
+    public GameObject game;
 
+    private int score;
+    public TileBoard a;
+    public TileBoard b;
     private void Start()
     {
+        
         NewGame();
     }
 
     public void NewGame()
     {
+        board.a = 0;
+        board.b = 0;
         SetScore(0);
         IncreaseScore(0);
         hiscoreText.text = LoadHiscore().ToString();
@@ -60,7 +66,7 @@ public class GameManager : MonoBehaviour
     {
         board.enabled = false;
         win4096.interactable = true;
-
+        
         StartCoroutine(Fade(win4096, 1f, 1f));
     }
 
@@ -69,7 +75,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void continueGame(){
-        
+        board.enabled = true;
+        continue2048.alpha = 0f;
+        continue2048.interactable = false;
+        board.a = 0;
+        board.b = 0;
     }
 
     private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay = 0f)

@@ -13,8 +13,8 @@ public class TileBoard : MonoBehaviour
 
     private bool waiting;
 
-    public int x;
-    public int y;
+    public int a;
+    public int b;
 
     private void Awake()
     {
@@ -163,11 +163,11 @@ public class TileBoard : MonoBehaviour
             gameManager.GameOver();
         }
 
-        if(CheckForContinue(x)){
+        if(CheckForContinue(a)){
             gameManager.Continue();
         }
 
-        if(CheckForWin(y)){
+        if(CheckForWin(b)){
             gameManager.Win();
         }
     }
@@ -207,19 +207,23 @@ public class TileBoard : MonoBehaviour
         return true;
     }
 
-    public bool CheckForContinue(int x){
-        this.x = x;
-        if(x != 2048){
+    public bool CheckForContinue(int a){
+        this.a = a;
+        if(a != 2048){
             return false;
+            
         }
         return true;
+        
+        
     }
     
-    public bool CheckForWin(int y){
-        this.y = y;
-        if(y != 4096){
+    public bool CheckForWin(int b){
+        this.b = b;
+        if(b != 4096){
             return false;
         }
         return true;
+        
     }
 }
