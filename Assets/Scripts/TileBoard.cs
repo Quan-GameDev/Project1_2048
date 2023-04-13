@@ -37,7 +37,7 @@ public class TileBoard : MonoBehaviour
 
     public void CreateTile(){
         Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[0], 512);
+        tile.SetState(tileStates[0], 2048);
         tile.Spawn(grid.GetRandomEmptyCell()); 
         tiles.Add(tile);
 
@@ -113,7 +113,7 @@ public class TileBoard : MonoBehaviour
 
     private bool CanMerge(Tile a, Tile b)
     {
-        return a.number == b.number && !b.locked;
+        return a.number == b.number && !b.locked && b.number != 4096;
     }
 
     private void MergeTiles(Tile a, Tile b)
@@ -159,7 +159,7 @@ public class TileBoard : MonoBehaviour
             CreateTile();
         }
 
-        if (CheckForGameOver()) {
+        if (CheckForGameOver(b)) {
             gameManager.GameOver();
         }
 
@@ -174,9 +174,9 @@ public class TileBoard : MonoBehaviour
 
     
 
-    public bool CheckForGameOver()
+    public bool CheckForGameOver(int b)
     {
-        if (tiles.Count != grid.size) {
+        if (b != 2048 || tiles.Count != grid.size) {
             return false;
         }
 
@@ -220,10 +220,37 @@ public class TileBoard : MonoBehaviour
     
     public bool CheckForWin(int b){
         this.b = b;
-        if(b != 4096){
+        if(b == 2048 || tiles.Count != grid.size){
             return false;
         }
+
+        foreach (var tile in tiles)
+        {
+            TileCell up = grid.GetAdjacentCell(tile.cell, Vector2Int.up);
+            TileCell down = grid.GetAdjacentCell(tile.cell, Vector2Int.down);
+            TileCell left = grid.GetAdjacentCell(tile.cell, Vector2Int.left);
+            TileCell right = grid.GetAdjacentCell(tile.cell, Vector2Int.right);
+
+            if (up != null && CanMerge(tile, up.tile)) {
+                return false;
+            }
+
+            if (down != null && CanMerge(tile, down.tile)) {
+                return false;
+            }
+
+            if (left != null && CanMerge(tile, left.tile)) {
+                return false;
+            }
+
+            if (right != null && CanMerge(tile, right.tile)) {
+                return false;
+            }
+        }
+
         return true;
+
+
         
     }
 }
