@@ -39,9 +39,7 @@ public class TileBoard : MonoBehaviour
         Tile tile = Instantiate(tilePrefab, grid.transform);
         tile.SetState(tileStates[0], 2048);
         tile.Spawn(grid.GetRandomEmptyCell()); 
-        tiles.Add(tile);
-
-        
+        tiles.Add(tile);        
     }
 
     private void Update()
@@ -168,7 +166,8 @@ public class TileBoard : MonoBehaviour
         }
 
         if(CheckForWin(b)){
-            gameManager.Win();
+            if (checkWinable()) gameManager.Win();
+            else gameManager.GameOver();
         }
     }
 
@@ -220,7 +219,7 @@ public class TileBoard : MonoBehaviour
     
     public bool CheckForWin(int b){
         this.b = b;
-        if(b == 2048 || tiles.Count != grid.size){
+        if(tiles.Count != grid.size){
             return false;
         }
 
@@ -249,8 +248,23 @@ public class TileBoard : MonoBehaviour
         }
 
         return true;
-
-
         
+    }
+
+    public bool checkWinable(){
+        int count4096 = 0;
+        int count2048 = 0;
+        foreach (var tile in tiles){
+            if (tile.number==4096){
+                count4096++;
+            }
+            if (tile.number==2048){
+                count2048++;
+            }
+        }
+        if (count4096==15 && count2048==1){
+            return true;
+        }
+        return false;
     }
 }
