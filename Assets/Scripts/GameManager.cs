@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public CanvasGroup continue2048;    
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI hiscoreText;
+    public AudioSource audio2048;
+    public AudioSource audio4096;
+    public AudioSource audioGameOver;
 
     public GameObject game;
 
@@ -50,24 +53,28 @@ public class GameManager : MonoBehaviour
     {
         board.enabled = false;
         gameOver.interactable = true;
-
+        gameOver.blocksRaycasts = true;
         StartCoroutine(Fade(gameOver, 1f, 1f));
+        audioGameOver.Play();
     }
 
     public void Continue()
     {
         board.enabled = false;
         continue2048.interactable = true;
-
+        continue2048.blocksRaycasts = true;
+        audio2048.Play();
         StartCoroutine(Fade(continue2048, 1f, 1f));
+        
     }
 
     public void Win()
     {
         board.enabled = false;
         win4096.interactable = true;
-        
+        win4096.blocksRaycasts = true;
         StartCoroutine(Fade(win4096, 1f, 1f));
+        audio4096.Play();
     }
 
     public void exitGame(){
