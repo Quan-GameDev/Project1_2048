@@ -16,18 +16,21 @@ public class GameManager : MonoBehaviour
     public AudioSource audioGameOver;
 
     public GameObject game;
+    static int loadCount = 0;
 
     private int score;
-    public TileBoard a;
-    public TileBoard b;
+    
+    public int a;
+    public int b;
     private void Start()
-    {
-        
+    {       
         NewGame();
+        
     }
 
     public void NewGame()
     {
+        loadCount = 0;
         board.a = 0;
         board.b = 0;
         SetScore(0);
@@ -53,7 +56,8 @@ public class GameManager : MonoBehaviour
     {
         board.enabled = false;
         gameOver.interactable = true;
-        gameOver.blocksRaycasts = true;
+        continue2048.blocksRaycasts = false;
+        win4096.blocksRaycasts = false;
         StartCoroutine(Fade(gameOver, 1f, 1f));
         audioGameOver.Play();
     }
@@ -61,18 +65,27 @@ public class GameManager : MonoBehaviour
     public void Continue()
     {
         board.enabled = false;
+        win4096.blocksRaycasts = false;
+        gameOver.blocksRaycasts = false;
         continue2048.interactable = true;
-        continue2048.blocksRaycasts = true;
         audio2048.Play();
         StartCoroutine(Fade(continue2048, 1f, 1f));
+        loadCount++;
         
+        if (loadCount > 1){
+            continueGame();
+            audio2048.Stop();         
+        }
+         
+
     }
 
     public void Win()
     {
         board.enabled = false;
         win4096.interactable = true;
-        win4096.blocksRaycasts = true;
+        continue2048.blocksRaycasts = false;
+        gameOver.blocksRaycasts = true;
         StartCoroutine(Fade(win4096, 1f, 1f));
         audio4096.Play();
     }

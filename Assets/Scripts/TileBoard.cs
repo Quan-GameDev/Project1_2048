@@ -16,6 +16,8 @@ public class TileBoard : MonoBehaviour
     public int a;
     public int b;
 
+    static int loadCount = 0;
+
     private void Awake()
     {
         grid = GetComponentInChildren<TileGrid>();
@@ -37,7 +39,7 @@ public class TileBoard : MonoBehaviour
 
     public void CreateTile(){
         Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[0], 2048);
+        tile.SetState(tileStates[0], 1024);
         tile.Spawn(grid.GetRandomEmptyCell()); 
         tiles.Add(tile);        
     }
@@ -127,6 +129,7 @@ public class TileBoard : MonoBehaviour
         gameManager.IncreaseScore(number);
         CheckForContinue(number);
         CheckForWin(number);
+
     }
 
     private int IndexOf(TileState state)
@@ -207,13 +210,14 @@ public class TileBoard : MonoBehaviour
     }
 
     public bool CheckForContinue(int a){
+        
         this.a = a;
-        if(a != 2048){
+        if(a != 2048 || loadCount > 1){
             return false;
             
         }
+        loadCount++;
         return true;
-        
         
     }
     
@@ -267,4 +271,5 @@ public class TileBoard : MonoBehaviour
         }
         return false;
     }
+
 }

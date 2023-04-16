@@ -1769,8 +1769,8 @@ MonoBehaviour:
   audio4096: {fileID: 1043959316}
   audioGameOver: {fileID: 1963859959}
   game: {fileID: 2023307689}
-  a: {fileID: 0}
-  b: {fileID: 0}
+  a: 0
+  b: 0
 --- !u!4 &683051133
 Transform:
   m_ObjectHideFlags: 0
@@ -4234,7 +4234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1726147083
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4740,7 +4740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1822174824
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4874,7 +4874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1840551405
 RectTransform:
   m_ObjectHideFlags: 0
