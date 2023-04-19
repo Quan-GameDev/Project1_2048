@@ -39,12 +39,24 @@ public class TileBoard : MonoBehaviour
 
     public void CreateTile(){
         Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[0], 1024);
+        tile.SetState(tileStates[(int)Math.Log(2048,2)-1], 2048);
         tile.Spawn(grid.GetRandomEmptyCell()); 
-        tiles.Add(tile);        
+        tiles.Add(tile);     
     }
 
-    private void Update()
+    public void CreateTile(int number, TileCell tileCell){
+        Tile tile = Instantiate(tilePrefab, grid.transform);
+        tile.SetState(tileStates[(int)Math.Log(number,2)-1], number);
+        tile.Spawn(tileCell); 
+        tiles.Add(tile); 
+           
+    }
+
+    public TileGrid getGrid(){
+        return this.grid;
+    }
+    
+    public void Update()
     {
       if (!waiting)
         {
@@ -57,10 +69,12 @@ public class TileBoard : MonoBehaviour
             } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
                 Move(Vector2Int.right, grid.width - 2, -1, 0, 1);
             }
+            PlayerPrefs.Save();
         }
+        
     }
 
-    private void Move(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
+    public void Move(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
     {
         bool changed = false;
 
@@ -266,7 +280,7 @@ public class TileBoard : MonoBehaviour
                 count2048++;
             }
         }
-        if (count4096==15 && count2048==1){
+        if (count4096==16 && count2048==0){
             return true;
         }
         return false;

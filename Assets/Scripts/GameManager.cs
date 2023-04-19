@@ -2,10 +2,14 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Collections.Generic;
+
 
 public class GameManager : MonoBehaviour
 {
     public TileBoard board;
+    public TileCell[] cells;
     public CanvasGroup gameOver;
     public CanvasGroup win4096;
     public CanvasGroup continue2048;    
@@ -23,9 +27,9 @@ public class GameManager : MonoBehaviour
     public int a;
     public int b;
     private void Start()
-    {       
+    {              
         NewGame();
-        
+        LoadGame();       
     }
 
     public void NewGame()
@@ -52,6 +56,68 @@ public class GameManager : MonoBehaviour
         board.enabled = true;
     }
 
+    public void SaveGame(){
+        if(board.enabled){
+            TileGrid grid = board.getGrid();
+            TileCell[] cells = grid.cells;
+            string saveString = "";
+            foreach(TileCell cell in cells){
+                if (!cell.empty)
+                    saveString+=cell.tile.number.ToString() + "," + cell.coordinates.x.ToString() + "," + cell.coordinates.y.ToString() + ",";                    
+                }
+            saveString+="," + score.ToString();
+            File.WriteAllText(Application.dataPath + "/data.save", saveString);
+            Debug.Log(saveString);
+        }        
+    }
+
+    public void Load(){
+        LoadGame();
+    }
+
+    public bool LoadGame(){
+        if (File.Exists(Application.dataPath + "/data.save")){
+            board.ClearBoard();
+            string saveString = File.ReadAllText(Application.dataPath + "/data.save");
+
+            Debug.Log(saveString + " " + saveString.Length);
+            string[] saveSplit = saveString.Split(',');
+            for (int i=0;i<saveSplit.Length;i++){
+                Debug.Log(saveSplit[i]);
+            }
+            int number = 0;
+            int posx = 0;
+            int posy = 0;
+            TileGrid grid = board.getGrid();
+
+            TileCell[] cells = grid.cells;
+            for (int i=0;i<cells.Length;i++){
+                Debug.Log(cells[i].empty);
+            }
+
+            for (int i=0;i<saveSplit.Length;i++){
+                if (saveSplit[i].Length != 0){
+                    Debug.Log(saveSplit[i]);
+                    if (i%3==0){
+                        number = int.Parse(saveSplit[i]);
+                    }
+                    else if (i%3==1){
+                        posx = int.Parse(saveSplit[i]);
+                    }
+                    else if (i%3==2){
+                        posy = int.Parse(saveSplit[i]);
+                        board.CreateTile(number,grid.GetCell(posx,posy));
+                        Debug.Log(grid.cells.Length);
+                    }
+                }
+                else{
+                    SetScore(int.Parse(saveSplit[i+1]));
+                }
+            }
+            return true;
+        } else return false;
+    }
+
     public void GameOver()
     {
         board.enabled = false;
@@ -60,6 +126,7 @@ public class GameManager : MonoBehaviour
         win4096.blocksRaycasts = false;
         StartCoroutine(Fade(gameOver, 1f, 1f));
         audioGameOver.Play();
+        File.Delete(Application.dataPath + "/data.save");
     }
 
     public void Continue()
@@ -76,8 +143,6 @@ public class GameManager : MonoBehaviour
             continueGame();
             audio2048.Stop();         
         }
-         
-
     }
 
     public void Win()
@@ -88,10 +153,17 @@ public class GameManager : MonoBehaviour
         gameOver.blocksRaycasts = true;
         StartCoroutine(Fade(win4096, 1f, 1f));
         audio4096.Play();
+        File.Delete(Application.dataPath + "/data.save");
     }
 
     public void exitGame(){
         Application.Quit();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(board.enabled)
+        SaveGame();
     }
 
     public void continueGame(){
@@ -146,5 +218,6 @@ public class GameManager : MonoBehaviour
     {
         return PlayerPrefs.GetInt("hiscore", 0);
     }
-
+    
+    
 }
