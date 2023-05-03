@@ -10,6 +10,7 @@ public class TileBoard : MonoBehaviour
     public TileState[] tileStates;
     private TileGrid grid;
     private List<Tile> tiles;
+    private List<Tile> tempTile = new List<Tile>(16);
 
     private bool waiting;
 
@@ -38,10 +39,28 @@ public class TileBoard : MonoBehaviour
     }
 
     public void CreateTile(){
-        Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[(int)Math.Log(2048,2)-1], 2048);
-        tile.Spawn(grid.GetRandomEmptyCell()); 
-        tiles.Add(tile);     
+        Tile tile;
+        if (tempTile.Count==0){
+            tile = Instantiate(tilePrefab, grid.transform);
+            tile.SetState(tileStates[(int)Math.Log(2,2)-1], 2);
+            tile.Spawn(grid.GetRandomEmptyCell()); 
+            tiles.Add(tile);
+            return;
+        }
+        else{
+            tile = tempTile[0];
+            // tile.transform.position
+            tempTile.Remove(tile);
+            tile.enabled = true;
+            tile.SetState(tileStates[(int)Math.Log(2,2)-1], 2);
+            TileCell tileCellTemp = grid.GetRandomEmptyCell();
+            tile.Spawn(tileCellTemp); 
+            tiles.Add(tile);
+        }
+        // else{
+        //     tile = Instantiate(tilePrefab, grid.transform);
+        // }
+             
     }
 
     public void CreateTile(int number, TileCell tileCell){
@@ -50,6 +69,13 @@ public class TileBoard : MonoBehaviour
         tile.Spawn(tileCell); 
         tiles.Add(tile); 
            
+    }
+
+    public void CreateTile(int number, Tile tile){
+        // Tile tile = Instantiate(tilePrefab, grid.transform);
+        tile.SetState(tileStates[(int)Math.Log(number,2)-1], number);
+        tile.Spawn(grid.GetRandomEmptyCell()); 
+        tiles.Add(tile);
     }
 
     public TileGrid getGrid(){
@@ -92,7 +118,9 @@ public class TileBoard : MonoBehaviour
 
         if (changed) {
             StartCoroutine(WaitForChanges());
-        }        
+        }   
+        // print(); 
+        Debug.Log(tempTile.Count);    
     }
 
     private bool MoveTile(Tile tile, Vector2Int direction)
@@ -132,6 +160,8 @@ public class TileBoard : MonoBehaviour
 
     private void MergeTiles(Tile a, Tile b)
     {
+        a.enabled = false;
+        tempTile.Add(a);
         tiles.Remove(a);
         a.Merge(b.cell);
 
@@ -140,10 +170,20 @@ public class TileBoard : MonoBehaviour
 
         b.SetState(tileStates[index], number);
 
+        // a.SetState(tileStates[0], 2);
+
         gameManager.IncreaseScore(number);
         CheckForContinue(number);
         CheckForWin(number);
 
+    }
+
+    private void print(){
+        string res = "";
+        foreach (var tile in tiles){
+            res+=tile.number.ToString()+" ";
+        }
+        Debug.Log(res);
     }
 
     private int IndexOf(TileState state)
